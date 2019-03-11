@@ -1,7 +1,7 @@
 {
   "name": "CORE19-06_quiz_mvc_client",
   "version": "1.0.0",
-  "description": "Practica Quiz",
+  "description": "CORE19-06_quiz_mvc_client",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
