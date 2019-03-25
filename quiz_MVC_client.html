@@ -1,5 +1,6 @@
 
 <html>
+<link href="StyleSheet.css" rel="stylesheet" type="text/css">
 <head><title>MVC Example</title><meta charset="utf-8"></head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js" > </script>
 <script type="text/javascript">
@@ -48,6 +49,7 @@ const quizForm = (msg, event, id, question, answer) =>
     </p>
     <button class="index">Go back</button>
 `;
+ 
 
    // CONTROLLERs
 
@@ -84,19 +86,34 @@ const updateController = (id) => {
 };
 
 const newController = () => {
-    // ..... introducir código
+
+    $('#main').html(quizForm('New Quiz', 'create', 0, "", ""));
 };
 
 const createController = () => {
-    // ..... introducir código
+    let quizzes = JSON.parse(localStorage.quizzes);
+    //Añadimos las preguntas a la ultima posición del array de quizzes
+    quizzes.push({question:$('#question').val(),answer: $('#answer').val()});
+    localStorage.quizzes= JSON.stringify(quizzes);
+    indexController();
 };
 
 const deleteController = (id) => {
-    // ..... introducir código
+    let quizzes = JSON.parse(localStorage.quizzes);
+    let confirmacion = confirm("Vas a borrar el quiz, ¿estás seguro de que deseas eliminarlo? ");
+    if (confirmacion) {
+    quizzes.splice(id, 1);
+}
+    localStorage.quizzes=JSON.stringify(quizzes);
+    indexController();
 };
 
 const resetController = (id) => {
-    // ..... introducir código
+    let confirmacion = confirm("Vas a resetear los quizzes, ¿estás seguro de que deseas resetearlo? ");
+    if(confirmacion){
+        localStorage.quizzes=initial_quizzes;
+    }
+    indexController();
 };
 
 
@@ -108,9 +125,12 @@ const eventsController = ()=> {
   $(document).on('click','.check',  (e)=> checkController(Number($(e.target).attr("quizid"))));
   $(document).on('click','.edit',   (e)=> editController(Number($(e.target).attr("quizid"))));
   $(document).on('click','.update', (e)=> updateController(Number($(e.target).attr("quizid"))));
-
+  $(document).on('click','.new', ()=> {newController();});
+  $(document).on('click','.create', ()=> {createController();});
+  $(document).on('click','.delete', (e)=> {deleteController(Number($(e.target).attr("quizid")));});
+  $(document).on('click','.reset', (e)=> {resetController()});
     // ..... añadir manejadores de eventos new, create, delete y reset
-}
+};
 
 
 $(function(){
@@ -121,6 +141,6 @@ $(function(){
 </head>
 <body>
     <h1>MVC: Quizzes</h1>
-    <div id="main"><div>
+    <div id="main"></div>
 </body>
 </html>
